@@ -26,7 +26,6 @@ export class TransactionsController {
     @Query('bankAccountId', OptionalParseUUIDPipe) bankAccountId?: string,
     @Query('type', new OptionalParseEnumPipe(TransactionType)) type?: TransactionType,
   ) {
-    console.log({bankAccountId});
     return this.transactionsService.findAllByUserId(userId, {month, year, bankAccountId,type});
   }
 

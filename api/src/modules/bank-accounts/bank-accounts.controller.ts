@@ -8,17 +8,17 @@ import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 export class BankAccountsController {
   constructor(private readonly bankAccountsService: BankAccountsService) {}
 
+  @Get()
+  findAll(@ActiveUserId() userId: string,) {
+    return this.bankAccountsService.findAllAccountsByUserId(userId);
+  }
+
   @Post()
   create(
     @ActiveUserId() userId: string,
     @Body() createBankAccountDto: CreateBankAccountDto) {
       return this.bankAccountsService.create(userId, createBankAccountDto);
     }
-    
-  @Get()
-  findAll(@ActiveUserId() userId: string,) {
-    return this.bankAccountsService.findAllAccountsByUserId(userId);
-  }
 
   @Put(':bankAccountId')
   update(
