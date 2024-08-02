@@ -6,4 +6,6 @@
 
 ## Modelagem do banco de dados. ✅
 
-## Criação da API utilizando Nest.js e Typescript. 👨🏼‍🔧 (em progresso)
+## Criação da API utilizando Nest.js e Typescript. ✅ 
+
+## Criação do Frontend com React + Vite e Tailwindcss 👨🏼‍🔧 (em progresso)
