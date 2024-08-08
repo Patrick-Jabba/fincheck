@@ -1,7 +1,12 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
+import toast from "react-hot-toast";
+
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod"
+
 import { authService } from "../../../app/services/authService";
+import { SignupParams } from "../../../app/services/authService/signup";
 
 const schema = z.object({
   name: z.string().min(1, 'Nome é obrigatório.'),
@@ -17,15 +22,28 @@ export function useRegisterController(){
     formState: { errors },
     handleSubmit: hookFormHandleSubmit,
 } = useForm<FormData>({
-  resolver: zodResolver(schema),
+    resolver: zodResolver(schema),
 });
+
+  const { mutateAsync, isPending } = useMutation({
+      mutationFn: async(data: SignupParams) => {
+
+      return authService.signup(data);
+    },
+  });
 
   // handleSubmit aqui é uma higher order function => função que retorna uma função
   const handleSubmit = hookFormHandleSubmit(async(data) =>{
-    const { accessToken }= await authService.signup(data);
+    try {
+      const { accessToken } = await mutateAsync(data);
+      toast.success('Conta criada com sucesso!')
+      console.log(accessToken)
+    } catch (error) {
+      toast.error('Ocorreu um erro ao criar sua conta!')
+    }
 
-    console.log(accessToken);
+
   });
 
-  return {handleSubmit, register, errors};
+  return { handleSubmit, register, errors, isPending };
 }
